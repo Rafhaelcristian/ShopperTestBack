@@ -4,7 +4,7 @@
 
 Para iniciar o projeto é necessário instalar todas as dependências e DevDependencias, para isso basta abrir o terminal ( ctrl + ') digitar npm install e aguardar todas as instalações.
 
-Após instalar as dependências é necessário alterar o nome do arquivo .env.exemple para somente .env e popular ele com as config do usuário que vai rodar a app.
+Após instalar as dependências é necessário alterar o nome do arquivo .env.exemple para somente .env e popular ele com as config do baco de dados do usuário que vai rodar a app.
 
 Vai ser necessário utilizar o MySQL, para isso estarei deixando o link com o passo a passo para instalar e adicionar as tabelas que estão com o arquivo database.sql dentro da pasta sql.
 

@@ -8,12 +8,8 @@ import {
 } from "../interfaces/products.interface";
 import { RowDataPacket } from "mysql2";
 
-export const updatePriceService = async (
-  payload: IProductRequest[],
-  productsWithErros: IProductsResponse[]
-) => {
+export const fetchProductsService = async (payload: IProductRequest[]) => {
   const productsResponse: IProductsResponse[] = [];
-  productsResponse.push(...productsWithErros);
 
   for (const product of payload) {
     const oldProduct = await fetchProduct(+product.product_code);
@@ -67,15 +63,8 @@ export const updatePriceService = async (
         responseObject.hasError = true;
         responseObject.errorMessages = [];
         responseObject.errorMessages?.push(error);
-      } else {
-        if (!responseObject.hasError) {
-          await updateProductSalesPrice(
-            +product.product_code,
-            +product.new_price
-          );
-          responseObject.new_price = +product.new_price;
-        }
       }
+      responseObject.new_price = +product.new_price;
       productsResponse.push(responseObject);
     }
   }
@@ -137,26 +126,6 @@ const fetchPack = async (pack_id: number): Promise<IPackProducts | null> => {
     }
   } catch (error) {
     console.error("Erro ao consultar banco de dados", error);
-    throw error;
-  } finally {
-    await connection.end();
-  }
-};
-
-const updateProductSalesPrice = async (
-  productCode: number,
-  newPrice: number
-): Promise<void> => {
-  const connection = await connectToDatabase();
-  try {
-    const updateQuery = `
-          UPDATE products
-          SET sales_price = ?
-          WHERE code = ?
-          `;
-    await connection.execute(updateQuery, [newPrice, productCode]);
-  } catch (error) {
-    console.error("Erro ao atualizar o preço do produto", error);
     throw error;
   } finally {
     await connection.end();

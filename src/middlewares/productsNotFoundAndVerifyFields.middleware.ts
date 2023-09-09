@@ -19,7 +19,7 @@ export const productsNotFoundAndVerifyFields = async (
     var csvData: IProductsResponse[] = [];
     var productsWithErros: IProductsResponse[] = [];
     const requiredFields: string[] = ["product_code", "new_price"];
-    var lineNumber = 0;
+    var lineNumber = 1;
 
     const readableStream = Readable.from([buffer]);
 
@@ -92,10 +92,9 @@ export const productsNotFoundAndVerifyFields = async (
             ...csvData.filter((product) => product.hasError)
           );
           const validProducts = csvData.filter((product, index) => {
-            return productsResults[index] !== null && !product.hasError;
+            return productsResults[index] !== null;
           });
           res.locals.csvData = validProducts;
-          res.locals.productsWithErros = productsWithErros;
 
           next();
         });
